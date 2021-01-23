@@ -7,7 +7,7 @@ public class ExitLevel : MonoBehaviour
 {
     [SerializeField] private GameObject _panel;
     [SerializeField] private Button _exitToMainMenuButton;
-    [SerializeField] private string _mainMenuSceneName;
+    [SerializeField] private string _nextSceneName;
     [SerializeField] private GameObject _fadeInPanel;
 
     private void OnEnable()
@@ -32,7 +32,7 @@ public class ExitLevel : MonoBehaviour
     private void LoadMainMenuScene()
     {
         Time.timeScale = 1;
-        StartCoroutine(FadeIn(_mainMenuSceneName));
+        StartCoroutine(FadeIn(_nextSceneName));
     }
 
     private IEnumerator FadeIn(string sceneName)
