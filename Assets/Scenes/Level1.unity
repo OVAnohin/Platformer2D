@@ -1464,7 +1464,7 @@ MonoBehaviour:
   _capacity: 3
   _deathEffect: {fileID: 2599027998099508846, guid: 08b38c16082be4e42a27705a8fb6a48d,
     type: 3}
-  _enemyPrefab: {fileID: 6719928825734972780, guid: cc7c41cc31a91ca499c73cf01d61f6c1,
+  _enemyPrefab: {fileID: 7228314540074885432, guid: cc7c41cc31a91ca499c73cf01d61f6c1,
     type: 3}
   _secondBetweenSpawn: 15
   _spawnPoint: {fileID: 180694214}
@@ -6507,7 +6507,7 @@ MonoBehaviour:
   _capacity: 3
   _deathEffect: {fileID: 2599027998099508846, guid: 08b38c16082be4e42a27705a8fb6a48d,
     type: 3}
-  _enemyPrefab: {fileID: 6719928825734972780, guid: cc7c41cc31a91ca499c73cf01d61f6c1,
+  _enemyPrefab: {fileID: 7228314540074885432, guid: cc7c41cc31a91ca499c73cf01d61f6c1,
     type: 3}
   _secondBetweenSpawn: 15
   _spawnPoint: {fileID: 1621303017}

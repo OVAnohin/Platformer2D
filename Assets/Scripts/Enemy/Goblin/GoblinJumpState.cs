@@ -5,71 +5,56 @@ using UnityEngine;
 
 [RequireComponent(typeof(Goblin))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class GoblinJumpState : State
 {
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private LayerMask _whatIsGround;
+    [SerializeField] private float _jumpForce;
+    [SerializeField] private float _checkRadius;
 
     public bool IsEndJump { get; private set; }
 
-    private float _a = -1;
-    private float _b = 4;
-    private float _x2;
-    private float _x0;
-    private float _positionY;
-    private float _speed;
     private Animator _animator;
+    private Rigidbody2D _rigidbody2D;
+    private bool _isGrounded;
+    private float _timeLeft = 0.1f;
+    private int _direction;
+    private float _speed;
 
     private void Awake()
     {
-        _speed = GetComponent<Goblin>().GetSpeed;
+        _speed = GetComponent<Goblin>().GetSpeed * 4;
         _animator = GetComponent<Animator>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     private void OnEnable()
     {
+        _direction = transform.rotation.y == 0 ? -1 : 1;
         _animator.Play("Jump");
         IsEndJump = false;
-        _positionY = transform.position.y;
-
-        СalculationJump();
-        StartCoroutine(Jump());
     }
 
-    private void СalculationJump()
+    private void Update()
     {
-        float discriminant;
-        discriminant = (_b * _b) - (4 * _a);
-        _x2 = (-_b - Convert.ToSingle(Math.Sqrt(discriminant))) / (2 * _a);
-        _x0 = -(_b / 2 * _a);
+        if (IsEndJump == true)
+            return;
+
+        Jump();
     }
 
-    private IEnumerator Jump()
+    private void Jump()
     {
-        bool isGroundAbandoned = false;
-        bool isExit = false;
-        int direction = transform.rotation.y == 0 ? -1 : 1;
+        _rigidbody2D.velocity = new Vector2(_direction * _speed, _rigidbody2D.velocity.y);
+        _timeLeft -= Time.deltaTime;
 
-        while (!isExit)
-        {
+        _isGrounded = Physics2D.OverlapCircle(_groundCheck.position, _checkRadius, _whatIsGround);
 
-            float stepX = direction * _speed * Time.deltaTime;
-            _x2 = stepX > 0 ? _x2 - stepX : _x2 + stepX;
-            float y = _a * (_x2 * _x2) + _b * _x2;
-            if (y > 0 || _x0 > _x2)
-                transform.position = new Vector2(transform.position.x + stepX, _positionY + y);
+        if (_isGrounded && IsEndJump == false && _timeLeft <= 0)
+            IsEndJump = true;
 
-            bool isOnGround = Physics2D.Raycast(_groundCheck.position, Vector2.down, 0.01f, _whatIsGround);
-
-            if (!isOnGround)
-                isGroundAbandoned = true;
-
-            if (isGroundAbandoned && isOnGround)
-                isExit = true;
-
-            yield return null;
-        }
-
-        IsEndJump = true;
+        if (IsEndJump == false && _isGrounded)
+            _rigidbody2D.velocity = Vector2.up * _jumpForce;
     }
 }
