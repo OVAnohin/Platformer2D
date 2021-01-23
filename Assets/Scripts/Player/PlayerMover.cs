@@ -53,7 +53,7 @@ public class PlayerMover : MonoBehaviour
 
         _isGrounded = Physics2D.OverlapCircle(_groundCheck.position, _checkRadius, _whatIsGground);
 
-        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && _isGrounded == true)
+        if ((Input.GetAxisRaw("Vertical") != 0) && _isGrounded == true)
         {
             PlayJumpSound();
             _animator.SetTrigger("takeOf");
@@ -74,7 +74,7 @@ public class PlayerMover : MonoBehaviour
         if (_wallSliding)
             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, Mathf.Clamp(_rigidbody2D.velocity.y, -_wallSlidingSpeed, float.MaxValue));
 
-        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && _wallSliding == true)
+        if ((Input.GetAxisRaw("Vertical") != 0) && _wallSliding == true)
         {
             PlayJumpSound();
             _wallJumping = true;
@@ -82,10 +82,7 @@ public class PlayerMover : MonoBehaviour
         }
 
         if (_wallJumping)
-        {
             _rigidbody2D.velocity = new Vector2(_xWallForce * -input, _yWallForce);
-        }
-
     }
 
     public void Land()
