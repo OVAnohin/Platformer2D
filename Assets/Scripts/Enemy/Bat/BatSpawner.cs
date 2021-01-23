@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class BatSpawner : BatObjectPool
 {
-  [SerializeField] private Bat _enemyPrefab = default;
-  [SerializeField] private float _secondBetweenSpawn = default;
-  [SerializeField] private Transform[] _spawnPoints = default;
-  [SerializeField] private Player _target = default;
+  [SerializeField] private Bat _enemyPrefab;
+  [SerializeField] private float _secondBetweenSpawn;
+  [SerializeField] private Transform[] _spawnPoints;
+  [SerializeField] private Player _target;
 
   private float _elapsedTime = 0;
 

@@ -3,57 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Goblin))]
-
 public class GoblinStateMachine : MonoBehaviour
 {
-  [SerializeField] private State _firstState = default;
+    [SerializeField] private State _firstState;
 
-  private State _currentState;
-  private Player _target;
-  private float _speed;
+    private State _currentState;
+    private Player _target;
+    private float _speed;
 
-  public State CurrentState => _currentState; 
+    public State CurrentState => _currentState;
 
-  private void Start()
-  {
-    _target = GetComponent<Goblin>().GetTarget;
-    _speed = GetComponent<Goblin>().GetSpeed;
-    Reset(_firstState);
-  }
+    private void Start()
+    {
+        _target = GetComponent<Goblin>().GetTarget;
+        _speed = GetComponent<Goblin>().GetSpeed;
 
-  private void Reset(State startState)
-  {
-    _currentState = startState;
+        Reset(_firstState);
+    }
 
-    if (_currentState != null)
-      _currentState.Enter(_target, _speed);
-  }
+    private void Reset(State startState)
+    {
+        _currentState = startState;
 
-  public void ResetOnDie()
-  {
-    _currentState.Exit();
-    _currentState = _firstState;
-    _currentState.Enter(_target, _speed);
-  }
+        if (_currentState != null)
+            _currentState.Enter(_target, _speed);
+    }
 
-  private void Update()
-  {
-    if (_currentState == null)
-      return;
+    public void ResetOnDie()
+    {
+        _currentState.Exit();
+        _currentState = _firstState;
+        _currentState.Enter(_target, _speed);
+    }
 
-    var nextState = _currentState.GetNextState();
-    if (nextState != null)
-      Transit(nextState);
-  }
+    private void Update()
+    {
+        if (_currentState == null)
+            return;
 
-  private void Transit(State nextState)
-  {
-    if (_currentState != null)
-      _currentState.Exit();
+        var nextState = _currentState.GetNextState();
+        if (nextState != null)
+            Transit(nextState);
+    }
 
-    _currentState = nextState;
+    private void Transit(State nextState)
+    {
+        if (_currentState != null)
+            _currentState.Exit();
 
-    if (_currentState != null)
-      _currentState.Enter(_target, _speed);
-  }
+        _currentState = nextState;
+
+        if (_currentState != null)
+            _currentState.Enter(_target, _speed);
+    }
 }

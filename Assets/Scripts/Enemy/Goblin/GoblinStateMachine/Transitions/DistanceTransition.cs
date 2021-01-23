@@ -3,32 +3,32 @@ using UnityEngine;
 
 public class DistanceTransition : Transition
 {
-  [SerializeField] private float _transitionRange = 0;
-  [SerializeField] private float _rangeSpread = 0.025f;
+    [SerializeField] private float _transitionRange;
+    [SerializeField] private float _rangeSpread;
 
-  private State _targetState = null;
-
-  private void Awake()
-  {
-    _transitionRange += Random.Range(-_rangeSpread, _rangeSpread);
-  }
-
-  public override State TargetState
-  {
-    get { return _targetState; }
-  }
-
-  private void OnEnable()
-  {
-    NeedTransit = false;
-  }
-
-  private void Update()
-  {
-    if (Vector2.Distance(transform.position, Target.transform.position) <= _transitionRange)
+    public override State TargetState
     {
-      NeedTransit = true;
-      _targetState = TargetStates.Where(value => value is GoblinAttackState).First();
+        get { return _targetState; }
     }
-  }
+
+    private State _targetState;
+
+    private void Awake()
+    {
+        _transitionRange += Random.Range(-_rangeSpread, _rangeSpread);
+    }
+
+    private void OnEnable()
+    {
+        NeedTransit = false;
+    }
+
+    private void Update()
+    {
+        if (Vector2.Distance(transform.position, Target.transform.position) <= _transitionRange)
+        {
+            NeedTransit = true;
+            _targetState = TargetStates.Where(value => value is GoblinAttackState).First();
+        }
+    }
 }

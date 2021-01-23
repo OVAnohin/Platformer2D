@@ -4,56 +4,54 @@ using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
-
 public class FireBall : Weapon
 {
-  [SerializeField] private float _speed = 0;
-  [SerializeField] private float _lifeTime = 0;
+    [SerializeField] private float _speed;
+    [SerializeField] private float _lifeTime;
 
-  private Rigidbody2D _rigidbody2D;
-  private BoxCollider2D _collider2D;
-  private bool _isMoveLeft;
-  private float _elapsedTime;
+    private Rigidbody2D _rigidbody2D;
+    private BoxCollider2D _collider2D;
+    private bool _isMoveLeft;
+    private float _elapsedTime;
 
-  protected override void OnTriggerEnter2D(Collider2D collision)
-  {
-    if (collision.TryGetComponent<Player>(out Player player))
-      player.TakeDamage(Damage);
+    private void OnEnable()
+    {
+        _rigidbody2D = GetComponent<Rigidbody2D>();
+        _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+        _collider2D = GetComponent<BoxCollider2D>();
+        _collider2D.isTrigger = true;
+    }
 
-    Destroy(gameObject);
-  }
+    private void Start()
+    {
+        if (_isMoveLeft == false)
+            transform.eulerAngles = new Vector3(0, -180, 0);
+    }
 
-  public void Init(bool isMoveLeft)
-  {
-    _isMoveLeft = isMoveLeft;
-  }
+    private void Update()
+    {
+        transform.Translate(Vector2.left * _speed * Time.deltaTime);
+        if (_elapsedTime > _lifeTime)
+            Destroy(gameObject);
+        else
+            _elapsedTime += Time.deltaTime;
+    }
 
-  public void EliminateSelf()
-  {
-    Destroy(gameObject);
-  }
+    public void Init(bool isMoveLeft)
+    {
+        _isMoveLeft = isMoveLeft;
+    }
 
-  private void OnEnable()
-  {
-    _rigidbody2D = GetComponent<Rigidbody2D>();
-    _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
-    _collider2D = GetComponent<BoxCollider2D>();
-    _collider2D.isTrigger = true;
-  }
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent<Player>(out Player player))
+            player.TakeDamage(Damage);
 
-  private void Start()
-  {
-    if (_isMoveLeft == false)
-      transform.eulerAngles = new Vector3(0, -180, 0);
+        Destroy(gameObject);
+    }
 
-  }
-  private void Update()
-  {
-    transform.Translate(Vector2.left * _speed * Time.deltaTime);
-    if (_elapsedTime > _lifeTime)
-      Destroy(gameObject);
-    else
-      _elapsedTime += Time.deltaTime;
-
-  }
+    public void EliminateSelf()
+    {
+        Destroy(gameObject);
+    }
 }

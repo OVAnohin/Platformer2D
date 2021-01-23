@@ -27,6 +27,15 @@ public class PlayerAttack : MonoBehaviour
         _isUnderAttack = false;
     }
 
+    private void OnEnable()
+    {
+        _player.WeaponChanged += OnWeaponChanged;
+    }
+    private void OnDisable()
+    {
+        _player.WeaponChanged -= OnWeaponChanged;
+    }
+
     private void Update()
     {
         if (Input.GetKey(KeyCode.Space) && _isUnderAttack == false)
@@ -43,15 +52,6 @@ public class PlayerAttack : MonoBehaviour
         var fireBall = enemiesToDamage.Where(element => element.GetComponent<FireBall>() != null).FirstOrDefault();
         if (fireBall != null)
             fireBall.GetComponent<FireBall>().EliminateSelf();
-    }
-
-    private void OnEnable()
-    {
-        _player.WeaponChanged += OnWeaponChanged;
-    }
-    private void OnDisable()
-    {
-        _player.WeaponChanged -= OnWeaponChanged;
     }
 
     private void OnWeaponChanged(Weapon weapon)

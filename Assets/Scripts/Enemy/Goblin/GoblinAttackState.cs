@@ -3,27 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-
 public class GoblinAttackState : State
 {
-  [SerializeField] private int _damage = 1;
-  [SerializeField] private float _delay = 1f;
+    [SerializeField] private int _damage;
+    [SerializeField] private float _delay;
 
-  private Animator _animator;
+    private Animator _animator;
 
-  public float Dalay
-  {
-    get { return _delay; }
-  }
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
+    }
 
-  private void Awake()
-  {
-    _animator = GetComponent<Animator>();
-  }
+    private void OnEnable()
+    {
+        Target.TakeDamage(_damage);
+        _animator.Play("Attack");
+    }
 
-  private void OnEnable()
-  {
-    Target.TakeDamage(_damage);
-    _animator.Play("Attack");
-  }
+    public float Dalay
+    {
+        get { return _delay; }
+    }
 }

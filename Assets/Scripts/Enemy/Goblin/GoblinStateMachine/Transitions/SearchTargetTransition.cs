@@ -2,29 +2,27 @@
 using UnityEngine;
 
 [RequireComponent(typeof(GoblinSearchTargetState))]
-
 public class SearchTargetTransition : Transition
 {
-  private State _targetState = null;
-  public override State TargetState
-  {
-    get { return _targetState; }
-  }
-
-  private void OnEnable()
-  {
-    NeedTransit = false;
-  }
-
-  private void Update()
-  {
-    if (GetComponent<GoblinSearchTargetState>().IsEndSearch)
+    public override State TargetState
     {
-      NeedTransit = true;
-      _targetState = (from value in TargetStates
-                      where value is GoblinMoverState
-                      select value).First();
+        get { return _targetState; }
     }
 
-  }
+    private State _targetState = null;
+
+    private void OnEnable()
+    {
+        NeedTransit = false;
+    }
+
+    private void Update()
+    {
+        if (GetComponent<GoblinSearchTargetState>().IsEndSearch)
+        {
+            NeedTransit = true;
+
+            _targetState = TargetStates.Where(value => value is GoblinMoverState).First();
+        }
+    }
 }

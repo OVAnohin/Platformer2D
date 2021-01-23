@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class BonusHeart : Health
 {
-  protected override void OnTriggerEnter2D(Collider2D collision)
-  {
-    if (collision.TryGetComponent<Player>(out Player player))
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
-      player.TakeBonusHealth();
-      AudioSource.clip = TakeSound;
-      AudioSource.Play();
-      Destroy(gameObject, 0.3f);
+        if (collision.TryGetComponent<Player>(out Player player))
+        {
+            player.TakeBonusHealth();
+            AudioSource.clip = TakeSound;
+            AudioSource.Play();
+            Destroy(gameObject, 0.3f);
+        }
     }
-  }
 }

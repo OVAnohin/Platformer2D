@@ -2,32 +2,30 @@
 using UnityEngine;
 
 [RequireComponent(typeof(GoblinAttackState))]
-
 public class AttackTransition : Transition
 {
-  private State _targetState = null;
+    private State _targetState;
+    private float _elapsedTime = 0;
 
-  private float _elapsedTime = 0;
-
-  public override State TargetState
-  {
-    get { return _targetState; }
-  }
-
-  private void OnEnable()
-  {
-    NeedTransit = false;
-    _elapsedTime = 0;
-  }
-
-  private void Update()
-  {
-    if (_elapsedTime > GetComponent<GoblinAttackState>().Dalay)
+    public override State TargetState
     {
-      NeedTransit = true;
-      _targetState = TargetStates.Where(value => value is GoblinSearchTargetState).First();
+        get { return _targetState; }
     }
 
-    _elapsedTime += Time.deltaTime;
-  }
+    private void OnEnable()
+    {
+        NeedTransit = false;
+        _elapsedTime = 0;
+    }
+
+    private void Update()
+    {
+        if (_elapsedTime > GetComponent<GoblinAttackState>().Dalay)
+        {
+            NeedTransit = true;
+            _targetState = TargetStates.Where(value => value is GoblinSearchTargetState).First();
+        }
+
+        _elapsedTime += Time.deltaTime;
+    }
 }

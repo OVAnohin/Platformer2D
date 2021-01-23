@@ -3,51 +3,50 @@ using UnityEngine;
 
 public class WarlocPatrol : MonoBehaviour
 {
-  [SerializeField] private float _speed = 0;
-  [SerializeField] private float _waitTime = 0;
-  [SerializeField] private Transform _groundCheck = default;
-  [SerializeField] private LayerMask _whatsIsGround = default;
-  [SerializeField] private float _distanceCheck = default;
+    [SerializeField] private float _speed;
+    [SerializeField] private float _waitTime;
+    [SerializeField] private Transform _groundCheck;
+    [SerializeField] private LayerMask _whatsIsGround;
+    [SerializeField] private float _distanceCheck;
 
-  private bool _isWait = false;
-  private bool _isMovigLeft = true;
+    private bool _isWait = false;
+    private bool _isMovigLeft = true;
 
-  private void Update()
-  {
-    if (!_isWait)
-      transform.Translate(Vector2.left * _speed * Time.deltaTime);
-
-    bool isGap = Physics2D.Raycast(_groundCheck.position, Vector2.down, _distanceCheck, _whatsIsGround);
-
-    if (isGap == false)
+    private void Update()
     {
-      Flip();
-      StartCoroutine(WaitTime());
-    }
-  }
+        if (!_isWait)
+            transform.Translate(Vector2.left * _speed * Time.deltaTime);
 
-  private IEnumerator WaitTime()
-  {
-    _isWait = true;
-    float elapsedTime = _waitTime;
+        bool isGap = Physics2D.Raycast(_groundCheck.position, Vector2.down, _distanceCheck, _whatsIsGround);
 
-    while (elapsedTime > 0)
-    {
-      elapsedTime -= Time.deltaTime;
-      yield return null;
+        if (isGap == false)
+        {
+            Flip();
+            StartCoroutine(WaitTime());
+        }
     }
 
-    _isWait = false;
-  }
+    private IEnumerator WaitTime()
+    {
+        _isWait = true;
+        float elapsedTime = _waitTime;
 
-  private void Flip()
-  {
-    if (_isMovigLeft)
-      transform.eulerAngles = new Vector3(0, -180, 0);
-    else
-      transform.eulerAngles = new Vector3(0, 0, 0);
+        while (elapsedTime > 0)
+        {
+            elapsedTime -= Time.deltaTime;
+            yield return null;
+        }
 
-    _isMovigLeft = !_isMovigLeft;
+        _isWait = false;
+    }
 
-  }
+    private void Flip()
+    {
+        if (_isMovigLeft)
+            transform.eulerAngles = new Vector3(0, -180, 0);
+        else
+            transform.eulerAngles = new Vector3(0, 0, 0);
+
+        _isMovigLeft = !_isMovigLeft;
+    }
 }
