@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DistanceTransition : Transition
 {
@@ -28,7 +27,7 @@ public class DistanceTransition : Transition
         if (Vector2.Distance(transform.position, Target.transform.position) <= _transitionRange)
         {
             NeedTransit = true;
-            _targetState = TargetStates.Where(value => value is GoblinAttackState).First();
+            _targetState = TargetStates.Find(value => value is GoblinAttackState);
         }
     }
 }

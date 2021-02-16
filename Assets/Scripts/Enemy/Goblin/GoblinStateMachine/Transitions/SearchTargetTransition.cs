@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(GoblinSearchTargetState))]
 public class SearchTargetTransition : Transition
@@ -22,7 +21,7 @@ public class SearchTargetTransition : Transition
         {
             NeedTransit = true;
 
-            _targetState = TargetStates.Where(value => value is GoblinMoverState).First();
+            _targetState = TargetStates.Find(value => value is GoblinMoverState);
         }
     }
 }

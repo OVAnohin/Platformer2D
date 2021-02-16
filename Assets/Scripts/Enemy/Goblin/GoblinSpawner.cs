@@ -25,8 +25,8 @@ public class GoblinSpawner : GoblinObjectPool
             if (_elapsedTime <= 0)
             {
                 _elapsedTime = _secondBetweenSpawn;
-                if (TryGetObject(out Goblin goblin))
-                    SetBatActivTrue(goblin, _spawnPoint.position);
+                Goblin goblin = GetGoblin();
+                SetBatActivTrue(goblin, _spawnPoint.position);
             }
 
             _elapsedTime -= Time.deltaTime;

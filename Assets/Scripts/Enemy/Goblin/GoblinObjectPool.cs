@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class GoblinObjectPool : MonoBehaviour
@@ -10,16 +9,22 @@ public class GoblinObjectPool : MonoBehaviour
     [SerializeField] private GameObject _deathEffect;
 
     private List<Goblin> _pool = new List<Goblin>();
+    private Goblin _prefab;
 
     protected void Init(Goblin prefab)
     {
+        _prefab = prefab;
+
         for (int i = 0; i < _capacity; i++)
-        {
-            Goblin spawned = Instantiate(prefab, _container.transform);
-            spawned.Dying += OnSpawnedDyed;
-            spawned.gameObject.SetActive(false);
-            _pool.Add(spawned);
-        }
+            SpawnGoblin();
+    }
+
+    private void SpawnGoblin()
+    {
+        Goblin spawned = Instantiate(_prefab, _container.transform);
+        spawned.Dying += OnSpawnedDyed;
+        spawned.gameObject.SetActive(false);
+        _pool.Add(spawned);
     }
 
     private void OnDisable()
@@ -33,16 +38,16 @@ public class GoblinObjectPool : MonoBehaviour
         Instantiate(_deathEffect, enemy.transform.position, Quaternion.identity);
     }
 
-    protected bool TryGetObject(out Goblin result)
+    protected Goblin GetGoblin()
     {
-        result = _pool.Where(p => p.gameObject.activeSelf == false).FirstOrDefault();
+        if (TryGetFreeGoblin() == null)
+            SpawnGoblin();
 
-        return result != null;
+        return TryGetFreeGoblin();
     }
 
-    public void ResetPool()
+    private Goblin TryGetFreeGoblin()
     {
-        foreach (var item in _pool)
-            item.gameObject.SetActive(false);
+        return _pool.Find(p => p.gameObject.activeSelf == false);
     }
 }

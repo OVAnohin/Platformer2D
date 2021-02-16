@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GapTransition : Transition
 {
@@ -25,7 +24,7 @@ public class GapTransition : Transition
         if (!isGap)
         {
             NeedTransit = true;
-            _targetState = TargetStates.Where(value => value is GoblinJumpState).First();
+            _targetState = TargetStates.Find(value => value is GoblinJumpState);
         }
     }
 }

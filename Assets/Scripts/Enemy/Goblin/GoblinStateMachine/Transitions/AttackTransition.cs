@@ -23,7 +23,7 @@ public class AttackTransition : Transition
         if (_elapsedTime > GetComponent<GoblinAttackState>().Dalay)
         {
             NeedTransit = true;
-            _targetState = TargetStates.Where(value => value is GoblinSearchTargetState).First();
+            _targetState = TargetStates.Find(value => value is GoblinSearchTargetState);
         }
 
         _elapsedTime += Time.deltaTime;
